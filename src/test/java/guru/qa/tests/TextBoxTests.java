@@ -16,18 +16,18 @@ public class TextBoxTests {
 
     @Test
     void fillFormTest() {
-        String permanentAddress = "another street 2";
+        String permanentAddress = "some street 1";
 
         open("https://demoqa.com/text-box");
         $("#userName").setValue("Alex");
         $("#userEmail").setValue("alex@qaguru.com");
-        $("#currentAddress").setValue("some street 1");
-        $("#permanentAddress").setValue("another street 2");
+        $("input#currentAddress").setValue("some street 1");
+        $("#permanentAddress").setValue(permanentAddress);
         $("#submit").click();
 
-        $("#output #name ").shouldHave(text("Alex"));
-        $("#output #email ").shouldHave(text("alex@qaguru.com"));
-        $("#output #currentAddress").shouldHave(text("some street 1"));
+        $("#output #name").shouldHave(text("Alex"));
+        $("#output #email").shouldHave(text("alex@qaguru.com"));
+        $("#output p#currentAddress").shouldHave(text("some street 1"));
         $("#output #permanentAddress").shouldHave(text(permanentAddress));
     }
 }

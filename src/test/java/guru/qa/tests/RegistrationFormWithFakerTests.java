@@ -1,16 +1,22 @@
 package guru.qa.tests;
 
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static guru.qa.tests.TestData.firstName;
-import static guru.qa.tests.TestData.lastName;
+import static guru.qa.utils.RandomUtils.getRandomString;
 
 
-public class RegistrationFormTests extends TestBase {
+public class RegistrationFormWithFakerTests extends TestBase {
+
+    Faker faker = new Faker();
+    String firstName = faker.name().firstName(),
+            lastName = faker.name().lastName(),
+            userEmail = faker.internet().emailAddress(),
+            currentAddress = faker.lebowski().quote();
 
     @Test
     void fillFormTest() {
@@ -18,7 +24,7 @@ public class RegistrationFormTests extends TestBase {
 
         $("#firstName").setValue(firstName);
         $("#lastName").setValue(lastName);
-        $("#userEmail").setValue("alex@egorov.com");
+        $("#userEmail").setValue(userEmail);
         $("#genterWrapper").$(byText("Other")).click();
         $("#userNumber").setValue("1231231231");
         $("#dateOfBirthInput").click();
@@ -28,7 +34,7 @@ public class RegistrationFormTests extends TestBase {
         $("#subjectsInput").setValue("Math").pressEnter();
         $("#hobbiesWrapper").$(byText("Reading")).click();
         $("#uploadPicture").uploadFromClasspath("img/1.png");
-        $("#currentAddress").setValue("Qa guru street 7");
+        $("#currentAddress").setValue(currentAddress);
         $("#state").click();
         $("#stateCity-wrapper").$(byText("NCR")).click();
         $("#city").click();
@@ -37,7 +43,7 @@ public class RegistrationFormTests extends TestBase {
 
         $(".modal-title").shouldHave(text("Thanks for submitting the form"));
         $(".table-responsive").shouldHave(text(firstName + " " + lastName),
-                text("alex@egorov.com"), text("28 July,2005"));
+                text(userEmail), text("28 July,2005"), text(currentAddress));
     }
 
 }
